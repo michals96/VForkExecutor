@@ -1,5 +1,10 @@
-#include  <stdio.h>
-#include  <sys/types.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include "fork.h"
 
 void  parse(char *line, char **argv)
 {
@@ -20,7 +25,7 @@ void  execute(char **argv)
      pid_t  pid;
      int    status;
      
-     if ((pid = fork()) < 0) {     
+     if ((pid = vfork()) < 0) {     
           printf("*** ERROR: forking child process failed\n");
           exit(1);
      }
@@ -31,8 +36,7 @@ void  execute(char **argv)
           }
      }
      else {                                 
-          while (wait(&status) != pid)    
-               ;
+          while (wait(&status) != pid);
      }
 }
 
