@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include<string.h>
 
-int main()
+int main(int argc, char** argv)
 {
   int array[100], n, c, d, swap;
 
@@ -28,7 +29,8 @@ int main()
   printf("Sorted list in ascending order:\n");
 
   for (c = 0; c < n; c++)
-     printf("%d\n", array[c]);
-
+     printf("%d\t", array[c]);
+  printf("\n");
+  //printf("\n%s \n", argv[3]);
   return 0;
 }

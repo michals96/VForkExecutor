@@ -13,5 +13,7 @@ fork:
 sort:
 	$(CC_C) sort.c -o sort
 
+run:
+	./fork
 clean:
 	rm -f fork sort
