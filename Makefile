@@ -8,10 +8,10 @@ all:
 	$(CC_C) sort.c -o sort
 
 fork:
-	$(CC_C) fork.c -o fork
+	$(CC_C) fork.c fork.h -o fork
 
 sort:
-	$(CC_C) sort.c -o sort
+	$(CC_C) sort.c sort.h -o sort
 
 run:
 	./fork
