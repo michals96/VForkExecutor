@@ -1,5 +1,5 @@
 # Makefile for building app
-# by Michal Stefaniuk
+# @author Michal Stefaniuk
 
 CC_C = gcc
 
