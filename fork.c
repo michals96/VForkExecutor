@@ -1,3 +1,13 @@
+/**
+    fork.c
+
+    Purpose: Runs as a child process created in fork.c
+    Processes passed array and prints it in nested vfork()
+
+    @author Michal Stefaniuk
+    @version 1.0
+*/
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -5,6 +15,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include "fork.h"
+
+void main(void)
+{
+    char  line[1024];             
+    char  *argv[64];              
+
+    while (1) 
+    {                  
+        printf("VForkExecutor $: ");     
+        gets(line);            
+        printf("\n");
+        parse(line, argv);      
+        if (strcmp(argv[0], "exit") == 0)  
+            exit(0);            
+        execute(argv);           
+    }
+}
 
 void parse(char *line, char **argv)
 {
@@ -19,13 +46,12 @@ void parse(char *line, char **argv)
     *argv = '\0';                 
 }
 
-     
 void execute(char **argv)
 {
     pid_t  pid;
     int    status;
     
-    if ((pid = vfork()) < 0) {     
+    if ((pid = fork()) < 0) {     
         printf("*** ERROR: forking child process failed\n");
         exit(1);
     }
@@ -39,23 +65,4 @@ void execute(char **argv)
     else {                                 
         while (wait(&status) != pid);
     }
-}
-
-     
-void  main(void)
-{
-    char  line[1024];             
-    char  *argv[64];              
-    
-    while (1) {                  
-        printf("Shell -> ");     
-        gets(line);            
-        printf("\n");
-        parse(line, argv);      
-        if (strcmp(argv[0], "exit") == 0)  
-            exit(0);            
-        execute(argv);           
-    }
-}
-
-                
+}             
