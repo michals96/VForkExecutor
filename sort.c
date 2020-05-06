@@ -14,9 +14,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h> 
 #include "sort.h"
-
-
 
 int main(int argc, char** argv)
 {
@@ -30,53 +29,55 @@ int main(int argc, char** argv)
   for (c = 0; c < n; c++)
     scanf("%d", &array[c]);
 
-  int   status;
-  int no = 10;
-
   sort(array, n);
 
-  pid_t pid = vfork();
+  int status;
+  pid_t pid;
 
+  bool isFork = false;
+  bool isVfork = false;
 
+  if(strcmp(argv[1], "vfork") == 0 || strcmp(argv[1], "vfork_err") == 0)
+  {
+    isVfork = true;
+    pid = vfork();
+  }
+  else if(strcmp(argv[1], "fork") == 0)
+  {
+    isFork = true;
+    pid = fork();
+  }
+  
   if ( pid < 0 )
   {
       printf("*** ERROR: forking child process failed\n");
       exit(1);
   }
-  else if(pid ==0)
+  else if( pid == 0 )
   {
+    printf("Child: ");
     printarr(array, n);
-    /*
-    printf("1: %d\n", no);
-
-    printf("Sorted list in ascending order:\n");
-*/
-    printf("\n");
-
-
-    // exit(0); 
-    // This line will cause child process to end
-    // which will prevent seg fault
+    printf("\n"); 
+    
+    if(isVfork && strcmp(argv[1], "vfork") == 0)
+      exit(0); 
+    // This line will 
+    // Cause child process to end which will prevent seg fault
   }
   else 
   { 
-    printarr(array, n);           
-    /*    
-    printf("2: %d\n", no); 
+    printf("Parent: ");
+    printarr(array, n);                
+    printf("\n"); 
 
-    printf("Sorted list in ascending order:\n");
-*/
-    printf("\n");        
-
-    // while (wait(&status) != pid); 
-    // necessary line to make 
-    // sure that parent process finishes when using fork
+    if(isFork)
+      while (wait(&status) != pid); 
+    // Make sure that parent process finishes when using fork
   }
 
-  // printf("\n %s \n", argv[0]);
-  // This way you can access passed input arguments
   return 0;
 }
+
 
 void sort(int array[], int n)
 {
@@ -98,8 +99,11 @@ void sort(int array[], int n)
 void printarr(int array[], int n)
 {
   int i;
+  printf("Sorted list in ascending order:\n");
+
   for ( i= 0; i < n; ++i)
   {
     printf("%d ", array[i]);
-  } 
+  }
+  printf("\n"); 
 }

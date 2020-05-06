@@ -16,15 +16,14 @@
 #include <string.h>
 #include "fork.h"
 
-
-void  main(void)
+void main(void)
 {
     char  line[1024];             
     char  *argv[64];              
 
     while (1) 
     {                  
-        printf("Shell -> ");     
+        printf("VForkExecutor $: ");     
         gets(line);            
         printf("\n");
         parse(line, argv);      
@@ -47,7 +46,6 @@ void parse(char *line, char **argv)
     *argv = '\0';                 
 }
 
-     
 void execute(char **argv)
 {
     pid_t  pid;
@@ -67,6 +65,4 @@ void execute(char **argv)
     else {                                 
         while (wait(&status) != pid);
     }
-}
-
-                
+}             
