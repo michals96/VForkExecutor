@@ -16,7 +16,7 @@
 #include <string.h>
 #include "fork.h"
 
-void main(void)
+int main()
 {
     char  line[1024];             
     char  *argv[64];              
@@ -51,7 +51,7 @@ void execute(char **argv)
     pid_t  pid;
     int    status;
     
-    if ((pid = fork()) < 0) {     
+    if ((pid = vfork()) < 0) {     
         printf("*** ERROR: forking child process failed\n");
         exit(1);
     }
@@ -60,7 +60,6 @@ void execute(char **argv)
             printf("*** ERROR: exec failed\n");
             exit(1);
         }
-        exit(0);
     }
     else {                                 
         while (wait(&status) != pid);
