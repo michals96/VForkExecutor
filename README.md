@@ -3,6 +3,8 @@
 **Michal Stefaniuk**  
 ## Project target
 The goal of the project was to create a program that would execute given compiled another program using vfork() function and compare it to the usual execution in the shell or with the fork. 
+
+For me the most difficult thing was to actually understand the workflow of system callers in UNIX systems and the whole workflow. When I got familiar with the idea it was actually fun to create this project. 
 ## How to run
 Program has attachted `Makefile` that is responsible for building the project. Clone the repository to your local device and follow below instructions.
 
@@ -75,3 +77,13 @@ Qutoe from **LINUX man**
 |Execution summary          |Both parent and child executes simultaneously|Parent process will be suspended until child execution is completed|
 |Outcome of usage          |Behaviour is predictable|Behaviour is not predictable|
 ## Implementation
+```mermaid
+graph LR
+A[fork.c] -- vfork --> B((VForkExecutor))
+B --./sort fork--> C{Input array}
+B --./sort vfork--> D{Input array}
+B --./sort vfork_err--> F{Input array}
+C --sort--> G(print_array)
+D --sort--> G(print_array)
+F --sort--> G(print_array)
+```
