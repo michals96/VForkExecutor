@@ -65,5 +65,13 @@ So by calling  `printf()`  in your child code, your code is already undefined.
 
 Qutoe from **LINUX man**
 >`vfork()` differs from `fork(2)` in that the calling thread is suspended until the child terminates (either normally, by calling `_exit(2)`, or abnormally, after delivery of a fatal signal), or it makes a call to `execve(2)`. Until that point, the child shares all memory with its parent, including the stack.
+## `fork()` vs `vfork()`
 
+|                |frok()                          |vfork()                         |
+|----------------|-------------------------------|-----------------------------|
+|Address space|Both the cild and parent process will have different address space            |Both child and parent process share the same address space           |
+|Modification in address space          |Any modification done by the child in its address space is not visible to parent process as both will have separate copies            |Any modification by child process is visible to both parent and child as both will have same copies            |
+|CoW(copy on write)          |This uses copy-on-write|Doesn't use CoW|
+|Execution summary          |Both parent and child executes simultaneously|Parent process will be suspended until child execution is completed|
+|Outcome of usage          |Behaviour is predictable|Behaviour is not predictable|
 ## Implementation
