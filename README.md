@@ -77,13 +77,4 @@ Qutoe from **LINUX man**
 |Execution summary          |Both parent and child executes simultaneously|Parent process will be suspended until child execution is completed|
 |Outcome of usage          |Behaviour is predictable|Behaviour is not predictable|
 ## Implementation
-```mermaid
-graph LR
-A[fork.c] -- vfork --> B((VForkExecutor))
-B --./sort fork--> C{Input array}
-B --./sort vfork--> D{Input array}
-B --./sort vfork_err--> F{Input array}
-C --sort--> G(print_array)
-D --sort--> G(print_array)
-F --sort--> G(print_array)
-```
+![Project chart](https://github.com/michals96/VForkExecutor/blob/finish-readme/chart.png)
