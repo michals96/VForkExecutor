@@ -1,9 +1,11 @@
-# VForkExecutor
-Program executor using vfork instead of the fork
+# VForkExecutor  
+*Programming in UNIX systems 202*0  
+**Michal Stefaniuk**  
+  
+## How to run
 
-> run_in_1 “command1 args” “command2 args2” ….
+## Project target & Workflow description  
+  
+The goal of the project was to create a program that would execute given compiled another program using vfork() function and compare it to the usual execution in the shell or with the fork.  
 
-Compare to the usual execution in the shell or with the fork.
-
-
-
+## Performance & Implementation
