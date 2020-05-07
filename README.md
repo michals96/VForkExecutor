@@ -27,7 +27,7 @@ Clean the project
     VForkExecutor $: ./sort type_of_system_call
   There are three types of system calls for user to choose from.
   * fork
->Printing array using process created by `fork()` should  present execute correct and simultaneously. 
+>Printing array using process created by `fork()` should  present correct and simultaneous execution. 
 >**while (wait(&status) != pid)** is used to wait for the parent to complete
   * vfork
   >Printing array using process created by `vfork()` should present that the parent process will be suspended until child execution is completed, although **exit(0)** needs to be called as child has to finish with exit
@@ -44,13 +44,20 @@ To exit the program just type
 
     VFrokExecutor $: ./sort fork
 This will run `./sort` in child process created in `./fork`. Then user is asked to input an array. Next task will be bubble sorting given array and regarding type of system call, array will be printed in another process created by **fork()** or **vfork()** 
+
+To use `vfork()`
+
+     VFrokExecutor $: ./sort vfork
+And to see how unpredictable `vfork()` can be
+   
+     VFrokExecutor $: ./sort vfork_err
+
  
  ## Implementation chart
 ![Project chart](https://github.com/michals96/VForkExecutor/blob/finish-readme/chart.png)
 
 
 ## Performance of system calls
-Here show examples of errors and describe differences between system calls
 * `fork()`  - creates a new child process, which is a complete copy of the parent process. Child and parent processes use different virtual address spaces, which is initially populated by the same memory pages. Then, as both processes are executed, the virtual address spaces begin to differ more and more, because the operating system performs a lazy copying of memory pages that are being written by either of these two processes and assigns an independent copies of the modified pages of memory for each process. This technique is called Copy-On-Write (COW).
 
 * `vfork()`  - creates a new child process, which is a "quick" copy of the parent process. In contrast to the system call  `fork()`, child and parent processes share the same virtual address space. NOTE! Using the same virtual address space, both the parent and child use the same stack, the stack pointer and the instruction pointer, as in the case of the classic  `fork()`! To prevent unwanted interference between parent and child, which use the same stack, execution of the parent process is frozen until the child will call either  `exec()`  (create a new virtual address space and a transition to a different stack) or  `_exit()`  (termination of the process execution).  `vfork()`  is the optimization of  `fork()`  for "fork-and-exec" model. It can be performed 4-5 times faster than the  `fork()`, because unlike the  `fork()`  (even with COW kept in the mind), implementation of  `vfork()`  system call does not include the creation of a new address space (the allocation and setting up of new page directories).
