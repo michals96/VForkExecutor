@@ -48,14 +48,22 @@ This will run `./sort` in child process created in `./fork`. Then user is asked 
 
 ## Performance of system calls
 Here show examples of errors and describe differences between system calls
+* `fork()`  - creates a new child process, which is a complete copy of the parent process. Child and parent processes use different virtual address spaces, which is initially populated by the same memory pages. Then, as both processes are executed, the virtual address spaces begin to differ more and more, because the operating system performs a lazy copying of memory pages that are being written by either of these two processes and assigns an independent copies of the modified pages of memory for each process. This technique is called Copy-On-Write (COW).
 
-The  `vfork()`  function has the same effect as  `fork()`, except that the behavior is undefined if the process created by  `vfork()`  either modifies any data other than a variable of type  `pid_t`  used to store the return value from  `vfork()`, or returns from the function in which  `vfork()`  was called, or calls any other function before successfully calling  `_exit()`  or one of the  `exec()`  family of functions.
+* `vfork()`  - creates a new child process, which is a "quick" copy of the parent process. In contrast to the system call  `fork()`, child and parent processes share the same virtual address space. NOTE! Using the same virtual address space, both the parent and child use the same stack, the stack pointer and the instruction pointer, as in the case of the classic  `fork()`! To prevent unwanted interference between parent and child, which use the same stack, execution of the parent process is frozen until the child will call either  `exec()`  (create a new virtual address space and a transition to a different stack) or  `_exit()`  (termination of the process execution).  `vfork()`  is the optimization of  `fork()`  for "fork-and-exec" model. It can be performed 4-5 times faster than the  `fork()`, because unlike the  `fork()`  (even with COW kept in the mind), implementation of  `vfork()`  system call does not include the creation of a new address space (the allocation and setting up of new page directories).
+
+* `clone()`  - creates a new child process. Various parameters of this system call, specify which parts of the parent process must be copied into the child process and which parts will be shared between them. As a result, this system call can be used to create all kinds of execution entities, starting from threads and finishing by completely independent processes. In fact,  `clone()`  system call is the base which is used for the implementation of  `pthread_create()`  and all the family of the  `fork()`  system calls.
+
+*  `exec()`  - resets all the memory of the process, loads and parses specified executable binary, sets up new stack and passes control to the entry point of the loaded executable. This system call never return control to the caller and serves for loading of a new program to the already existing process. This system call with  `fork()`  system call together form a classical UNIX process management model called "fork-and-exec"
+
+
+According to above  `vfork()`  function has the same effect as  `fork()`, except that the behavior is undefined if the process created by  `vfork()`  either modifies any data other than a variable of type  `pid_t`  used to store the return value from  `vfork()`, or returns from the function in which  `vfork()`  was called, or calls any other function before successfully calling  `_exit()`  or one of the  `exec()`  family of functions.
 
 So by calling  `printf()`  in your child code, your code is already undefined. 
 
 > Note that even a call to  `exit()`  could  sometimes lead to undefined behavior
 
-According to **LINUX man**
+Qutoe from **LINUX man**
 >`vfork()` differs from `fork(2)` in that the calling thread is suspended until the child terminates (either normally, by calling `_exit(2)`, or abnormally, after delivery of a fatal signal), or it makes a call to `execve(2)`. Until that point, the child shares all memory with its parent, including the stack.
 
 ## Implementation
