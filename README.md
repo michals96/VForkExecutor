@@ -54,7 +54,7 @@ And to see how unpredictable `vfork()` can be
 
  
  ## Implementation chart
-![Project chart](https://github.com/michals96/VForkExecutor/blob/finish-readme/chart.png)
+![Project chart](https://github.com/michals96/VForkExecutor/blob/master/chart.png)
 
 
 ## Performance of system calls
