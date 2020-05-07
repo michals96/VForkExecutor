@@ -23,6 +23,15 @@ Clean the project
 
     VForkExecutor $: ./sort type_of_system_call
   There are three types of system calls for user to choose from.
+  * fork
+  * vfork
+  * vfork_err
+  
+  Each one of them implements different behaviour which will be described thoroughly in next section. Example usage
+  
+
+    VFrokExecutor $: ./sort fork
+This will run `./sort` in child process created in `./fork`. Then user is asked to input an array. Next task will be bubble sorting given array and regarding type of system call, array will be printed in another process created by **fork()** or **vfork()** 
 
  
 
