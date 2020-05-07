@@ -27,25 +27,26 @@ Clean the project
     VForkExecutor $: ./sort type_of_system_call
   There are three types of system calls for user to choose from.
   * fork
+>Printing array using process created by `fork()` should  present execute correct and simultaneously. 
+>**while (wait(&status) != pid)** is used to wait for the parent to complete
   * vfork
+  >Printing array using process created by `vfork()` should present that the parent process will be suspended until child execution is completed, although **exit(0)** needs to be called as child has to finish with exit
+   
   * vfork_err
+  >Printing array using process created by `vfork()`  but this time no **exit(0)**  is called so the behaviour is not predictable and the most likely result would be **segmentation fault** 
  
 To exit the program just type
 
     VForkExecutor $: exit
 
- 
-
-
- 
-
 ## Workflow description  
   Each one of system calls implements different behaviour. Example usage
-  
 
     VFrokExecutor $: ./sort fork
 This will run `./sort` in child process created in `./fork`. Then user is asked to input an array. Next task will be bubble sorting given array and regarding type of system call, array will be printed in another process created by **fork()** or **vfork()** 
-  
+ 
+ ## Implementation chart
+![Project chart](https://github.com/michals96/VForkExecutor/blob/finish-readme/chart.png)
 
 
 ## Performance of system calls
@@ -76,5 +77,4 @@ Qutoe from **LINUX man**
 |CoW(copy on write)          |This uses copy-on-write|Doesn't use CoW|
 |Execution summary          |Both parent and child executes simultaneously|Parent process will be suspended until child execution is completed|
 |Outcome of usage          |Behaviour is predictable|Behaviour is not predictable|
-## Implementation
-![Project chart](https://github.com/michals96/VForkExecutor/blob/finish-readme/chart.png)
+
