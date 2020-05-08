@@ -47,6 +47,11 @@ int main(int argc, char** argv)
     isFork = true;
     pid = fork();
   }
+  else
+  {
+    pid = fork();
+  }
+  
   
   if ( pid < 0 )
   {
