@@ -6,8 +6,6 @@ set ylabel "Time [s]"
 
 set yrange [0.0 : 0.0001]
 
-
-
 set title "vfork vs fork()"
 set grid
 
