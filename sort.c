@@ -92,10 +92,8 @@ int main(int argc, char** argv)
     // Make sure that parent process finishes when using fork
   }
 
-
   return 0;
 }
-
 
 void sort(int array[], int n)
 {

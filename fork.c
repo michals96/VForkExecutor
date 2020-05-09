@@ -16,8 +16,6 @@
 #include <string.h>
 #include "fork.h"
 
-
-
 int main()
 {
     char  line[1024];             
@@ -41,8 +39,7 @@ int main()
         {
             execute(argv);
         }
-        
-                  
+              
     }
 }
 
