@@ -85,3 +85,36 @@ Qutoe from **LINUX man**
 |Execution summary          |Both parent and child executes simultaneously|Parent process will be suspended until child execution is completed|
 |Outcome of usage          |Behaviour is predictable|Behaviour is not predictable|
 
+## Benchmark
+
+The project has built in `vfork()` and `fork()` time benchmarking mechanism.
+The workflow goes as below:
+* **fork.c** creates in loop child process *50 times*
+* **benchmark.c** generates *5-element* array filled with random values <0,50>
+* time of processing the array is counted and used for further steps 
+
+First we want to output times of execution to txt files
+
+    make run > benchmark_vfork.txt
+    ./benchmark vfork
+    exit
+  Do the same with `fork()`
+  
+
+    make run > benchmark_fork.txt
+    ./benchmark fork
+    exit
+   This will result in two .txt files that we want to merge into one file. To do it we will use python script 
+   
+
+    python parser.py
+   And now we have **benchmark.txt** file which is ready to be plotted. To do so we will use gnuplot script which will present results on image graph
+   
+
+    gnuplot plot.sh
+ 
+![Project chart](https://github.com/michals96/VForkExecutor/blob/master/graph_bench.png)
+
+As we see `vfork()` performs way faster. But at this point we are not surprised, are we?
+
+

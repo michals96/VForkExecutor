@@ -15,11 +15,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h> 
+#include <sys/time.h>
 #include "sort.h"
 
 int main(int argc, char** argv)
 {
   int array[100], n, c;
+
+  struct timeval  tv1, tv2;
 
   printf("Enter number of elements\n");
   scanf("%d", &n);
@@ -29,11 +32,13 @@ int main(int argc, char** argv)
   for (c = 0; c < n; c++)
     scanf("%d", &array[c]);
 
+  gettimeofday(&tv1, NULL);
+
   sort(array, n);
 
   int status;
   pid_t pid;
-
+  
   bool isFork = false;
   bool isVfork = false;
 
@@ -52,7 +57,6 @@ int main(int argc, char** argv)
     pid = fork();
   }
   
-  
   if ( pid < 0 )
   {
       printf("*** ERROR: forking child process failed\n");
@@ -62,8 +66,12 @@ int main(int argc, char** argv)
   {
     printf("Child: ");
     printarr(array, n);
-    printf("\n"); 
-    
+    gettimeofday(&tv2, NULL);
+
+    printf ("Total time = %f seconds\n",
+         (double) (tv2.tv_usec - tv1.tv_usec) / 1000000 +
+         (double) (tv2.tv_sec - tv1.tv_sec));
+
     if(isVfork && strcmp(argv[1], "vfork") == 0)
       exit(0); 
     // This line will 
@@ -73,7 +81,11 @@ int main(int argc, char** argv)
   { 
     printf("Parent: ");
     printarr(array, n);                
-    printf("\n"); 
+    gettimeofday(&tv2, NULL);
+
+    printf ("Total time = %f seconds\n",
+         (double) (tv2.tv_usec - tv1.tv_usec) / 1000000 +
+         (double) (tv2.tv_sec - tv1.tv_sec));
 
     if(isFork)
       while (wait(&status) != pid); 
@@ -82,7 +94,6 @@ int main(int argc, char** argv)
 
   return 0;
 }
-
 
 void sort(int array[], int n)
 {
@@ -104,7 +115,7 @@ void sort(int array[], int n)
 void printarr(int array[], int n)
 {
   int i;
-  printf("Sorted list in ascending order:\n");
+  printf("Sorted list in ascending order: ");
 
   for ( i= 0; i < n; ++i)
   {

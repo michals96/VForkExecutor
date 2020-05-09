@@ -28,8 +28,18 @@ int main()
         printf("\n");
         parse(line, argv);      
         if (strcmp(argv[0], "exit") == 0)  
-            exit(0);            
-        execute(argv);           
+            exit(0);
+        else if(strcmp(argv[0], "./benchmark") == 0)  
+        {
+            int i;
+            for( i=0; i<50; ++i)            
+                execute(argv); 
+        }
+        else
+        {
+            execute(argv);
+        }
+              
     }
 }
 
