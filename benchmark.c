@@ -19,6 +19,8 @@
 #include <time.h>
 #include "benchmark.h"
 
+
+
 int main(int argc, char** argv)
 {
     int n = 5;
@@ -63,7 +65,7 @@ int main(int argc, char** argv)
     {
         gettimeofday(&tv2, NULL);
 
-        printf ("Time = %f seconds\n",
+        printf ("%f\n",
             (double) (tv2.tv_usec - tv1.tv_usec) / 1000000 +
             (double) (tv2.tv_sec - tv1.tv_sec));
 
